@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="referrer" content="no-referrer">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Our Shop</title>
+    <title>Amora Fashion Shop</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <h1>Our Catalog</h1>
+    <header class="main-header">
+        <div class="brand-container">
+            <!-- Title text removed, only logo remains -->
+            <img src="amora.png" alt="Amora Logo" class="brand-logo">
+        </div>
+    </header>
 
     <div class="filter-bar">
         <input type="text" id="searchInput" placeholder="Search products...">
@@ -20,12 +25,13 @@
                 <option value="Topwear">Topwear</option>
                 <option value="Bottomwear">Bottomwear</option>
                 <option value="One set">One set</option>
+                <option value="Dress">Dress</option>
                 <option value="Accessories">Accessories</option>
             </select>
             <select id="priceSort">
                 <option value="newest">Newest</option>
-                <option value="low">Price: Low</option>
-                <option value="high">Price: High</option>
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
             </select>
         </div>
     </div>
@@ -34,7 +40,7 @@
     
     <div id="lightbox" class="lightbox">
         <img id="lightbox-img" src="">
-        <p>Tap to close</p>
+        <p>Tap anywhere to close</p>
     </div>
 
     <script src="app.js"></script>
