@@ -1,5 +1,5 @@
-const SUPABASE_URL = 'https://kfeodyswinztdgtrisro.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_jbNoQ_-yEOX9OqE-VchFJA_PFMFYbv5'; 
+const SUPABASE_URL = 'https://wseexqhbscjvkwtlejfa.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_T7CJ0sBMTZWkQDmeOemsIQ_uvV1uYLk'; 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allProducts = []; // Stores the master list from database
