@@ -64,13 +64,14 @@ async function adminListProducts() {
 
     const { data } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
     list.innerHTML = data.map(p => `
-        <div class="card" style="padding: 20px; margin-bottom: 10px;">
-            <span class="category-tag">${p.category || 'General'}</span>
+        <div class="card" style="padding: 10px; margin-bottom: 10px;">
+            <!-- Added clickable image for zoom -->
+            ${p.image_url ? `<img src="${p.image_url}" onclick="window.openLightbox('${p.image_url}')" style="width:100%; height:150px; object-fit:cover; cursor:pointer; margin-bottom:10px; border-radius:8px;">` : ''}
             <h3>${p.name}</h3>
-            <p>$${p.price}</p>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="editProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${p.price}', '${p.description ? p.description.replace(/'/g, "\\'") : ''}', '${p.image_url}', '${p.category}')" style="background: #f39c12; flex: 1;">Edit</button>
-                <button onclick="deleteProduct('${p.id}')" style="background: #e74c3c; flex: 1;">Delete</button>
+            <p>$${p.price} - ${p.category}</p>
+            <div style="display:flex; gap:5px;">
+                <button onclick="editProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${p.price}', '${p.description ? p.description.replace(/'/g, "\\'") : ''}', '${p.image_url}', '${p.category}')" style="background:#f39c12; flex:1;">Edit</button>
+                <button class="delete-btn" onclick="deleteProduct('${p.id}')" style="background:#e74c3c; flex:1; margin-top:0;">Delete</button>
             </div>
         </div>
     `).join('');
@@ -149,6 +150,10 @@ window.openLightbox = (imgUrl) => {
 document.addEventListener('DOMContentLoaded', () => {
     displayProducts();
     adminListProducts();
+
+    document.getElementById('lightbox')?.addEventListener('click', function() {
+        this.style.display = 'none';
+    });
     
     const form = document.getElementById('addForm');
     if (form) form.addEventListener('submit', handleSave);
