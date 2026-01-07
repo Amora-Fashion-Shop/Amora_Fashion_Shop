@@ -5,13 +5,14 @@
     <meta name="referrer" content="no-referrer">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Amora Fashion Shop</title>
+    <!-- Favicon link to show logo in browser tab -->
+    <link rel="icon" type="image/png" href="amoralogo.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <header class="main-header">
         <div class="brand-container">
-            <!-- Title text removed, only logo remains -->
             <img src="amora.png" alt="Amora Logo" class="brand-logo">
         </div>
     </header>
@@ -38,6 +39,9 @@
 
     <div id="products-grid" class="grid"></div>
     
+    <!-- Floating Back to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Go to top">↑</button>
+
     <div id="lightbox" class="lightbox">
         <img id="lightbox-img" src="">
         <p>Tap anywhere to close</p>

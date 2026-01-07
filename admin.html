@@ -3,19 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Manage Shop</title>
+    <title>Admin - Manage Amora Shop</title>
+    <!-- Favicon link to show logo in browser tab -->
+    <link rel="icon" type="image/png" href="amoralogo.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <h1>Product Manager</h1>
+    <header class="main-header">
+        <div class="brand-container">
+            <img src="amora.png" alt="Amora Logo" class="brand-logo">
+        </div>
+    </header>
     
     <div class="form-container">
         <h3 id="form-title">Add New Product</h3>
         <form id="addForm">
             <input type="hidden" id="edit-id"> 
             <input type="text" id="name" placeholder="Product Name" required>
-            <input type="number" id="price" placeholder="Price" required>
+            <input type="number" id="price" placeholder="Price (Baht)" required>
             
             <select id="category" required>
                 <option value="" disabled selected>Select Category</option>
@@ -23,6 +29,7 @@
                 <option value="Topwear">Topwear</option>
                 <option value="Bottomwear">Bottomwear</option>
                 <option value="One set">One set</option>
+                <option value="Dress">Dress</option>
                 <option value="Accessories">Accessories</option>
             </select>
 
@@ -45,10 +52,12 @@
     <h2 style="margin-top:40px;">Current Inventory</h2>
     <div id="admin-list" class="grid"></div>
 
-    <!-- Lightbox included in admin for quick checking -->
+    <!-- Floating Back to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Go to top">↑</button>
+
     <div id="lightbox" class="lightbox">
         <img id="lightbox-img" src="">
-        <p>Tap to close</p>
+        <p>Tap anywhere to close</p>
     </div>
 
     <script src="app.js"></script>

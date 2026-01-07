@@ -2,8 +2,8 @@
 :root {
     --primary-color: #1a1a1a;
     --accent-color: #27ae60;
-    --bg-color: #fdf8fd;
-    --card-bg: #fff8fe;
+    --bg-color: #fff9ff;
+    --card-bg: #fff4fe;
     --border-color: #eaeaea;
     --text-main: #2d3436;
     --text-muted: #636e72;
@@ -32,50 +32,50 @@ body {
 .main-header {
     max-width: 1200px;
     margin: 0 auto 30px;
-    padding: 10px 0;
+    padding: 20px 0;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 }
 
 .brand-container {
     display: flex;
     align-items: center;
-    gap: 30px;
+    justify-content: center;
 }
 
 .brand-logo {
-    height: 100px; /* Increased for a larger, clearer brand presence on mobile */
+    height: 140px;
     width: auto;
     object-fit: contain;
 }
 
-.brand-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.shop-name {
-    font-size: 1.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--primary-color);
-    line-height: 1;
-}
-
-.shop-sub {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: var(--text-muted);
-    font-weight: 400;
-    margin-top: 4px;
-}
-
 @media (min-width: 768px) {
-    .brand-logo { height: 110px; } /* Larger logo size for desktop screens */
-    .shop-name { font-size: 2.2rem; }
+    .brand-logo { height: 180px; }
+}
+
+/* Back to Top Button */
+.back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.back-to-top:hover {
+    background-color: #444;
 }
 
 /* Filter Bar Styling */
@@ -163,7 +163,7 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    text-align: left; /* Kept left-aligned as per your previous request */
+    text-align: left;
 }
 
 .card h3 {
@@ -206,7 +206,7 @@ body {
     align-self: flex-start;
 }
 
-/* Admin Form Styles */
+/* Form Styles */
 .form-container {
     max-width: 550px;
     margin: 0 auto 30px;

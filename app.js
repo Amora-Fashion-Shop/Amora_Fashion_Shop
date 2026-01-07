@@ -4,6 +4,11 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allProducts = []; 
 
+// --- UTILS ---
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 // --- CUSTOMER PAGE DISPLAY ---
 async function displayProducts() {
     const grid = document.getElementById('products-grid');
@@ -17,10 +22,10 @@ async function displayProducts() {
     }
 
     allProducts = data;
-    renderFiltered();
+    renderFiltered(false); // Initial load doesn't force scroll unless filtered
 }
 
-function renderFiltered() {
+function renderFiltered(shouldScroll = true) {
     const grid = document.getElementById('products-grid');
     if (!grid) return;
 
@@ -38,7 +43,7 @@ function renderFiltered() {
     if (sortTerm === 'high') filtered.sort((a, b) => b.price - a.price);
 
     if (filtered.length === 0) {
-        grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; padding: 40px;'>ไม่พบสินค้าที่คุณค้นหา</p>";
+        grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; padding: 40px;'>No products found matching your search.</p>";
         return;
     }
 
@@ -66,23 +71,24 @@ function renderFiltered() {
             </div>
         </div>
     `}).join('');
+
+    if (shouldScroll) scrollToTop();
 }
 
 // --- ADMIN PAGE LOGIC ---
-
 async function adminListProducts() {
     const list = document.getElementById('admin-list');
     if (!list) return;
 
     const { data } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
     list.innerHTML = data.map(p => `
-        <div class="card" style="padding: 10px; margin-bottom: 10px; border: 1px solid #ddd;">
+        <div class="card" style="padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; text-align: left;">
             <img src="${p.image_url || 'https://via.placeholder.com/150'}" style="width:100%; height:120px; object-fit:cover; border-radius:8px; margin-bottom:10px; cursor:pointer;" onclick="window.openLightbox(this.src)">
             <h3>${p.name}</h3>
             <p>฿${p.price} - ${p.category}</p>
             <div style="display:flex; gap:5px; margin-top:10px;">
-                <button onclick="editProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${p.price}', '${p.description ? p.description.replace(/'/g, "\\'") : ''}', '${p.image_url || ''}', '${p.image_url_2 || ''}', '${p.image_url_3 || ''}', '${p.image_url_4 || ''}', '${p.image_url_5 || ''}', '${p.category}')" style="background:#f39c12; flex:1;">Edit</button>
-                <button onclick="deleteProduct('${p.id}')" style="background:#e74c3c; flex:1;">Delete</button>
+                <button onclick="editProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${p.price}', '${p.description ? p.description.replace(/'/g, "\\'") : ''}', '${p.image_url || ''}', '${p.image_url_2 || ''}', '${p.image_url_3 || ''}', '${p.image_url_4 || ''}', '${p.image_url_5 || ''}', '${p.category}')" style="background:#f39c12; flex:1; font-size: 14px;">Edit</button>
+                <button onclick="deleteProduct('${p.id}')" style="background:#e74c3c; flex:1; font-size: 14px;">Delete</button>
             </div>
         </div>
     `).join('');
@@ -103,7 +109,7 @@ window.editProduct = (id, name, price, desc, img1, img2, img3, img4, img5, cat) 
     document.getElementById('form-title').innerText = "Edit Product";
     document.getElementById('submit-btn').innerText = "Update Product";
     document.getElementById('cancel-btn').style.display = "inline-block";
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
 };
 
 window.resetForm = () => {
@@ -142,16 +148,20 @@ async function handleSave(e) {
     } else {
         alert(id ? "Product Updated!" : "Product Added!");
         resetForm();
-        adminListProducts(); 
-        displayProducts();
+        await adminListProducts(); 
+        await displayProducts();
+        scrollToTop();
     }
 }
 
 async function deleteProduct(id) {
-    if (confirm("คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้?")) {
+    if (confirm("Are you sure?")) {
         const { error } = await _supabase.from('products').delete().eq('id', id);
         if (error) alert(error.message);
-        else adminListProducts();
+        else {
+            await adminListProducts();
+            scrollToTop();
+        }
     }
 }
 
@@ -180,7 +190,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('addForm');
     if (form) form.addEventListener('submit', handleSave);
 
-    document.getElementById('searchInput')?.addEventListener('input', renderFiltered);
-    document.getElementById('categoryFilter')?.addEventListener('change', renderFiltered);
-    document.getElementById('priceSort')?.addEventListener('change', renderFiltered);
+    document.getElementById('searchInput')?.addEventListener('input', () => renderFiltered(true));
+    document.getElementById('categoryFilter')?.addEventListener('change', () => renderFiltered(true));
+    document.getElementById('priceSort')?.addEventListener('change', () => renderFiltered(true));
+
+    // Back to Top logic
+    const btn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    });
+    btn?.addEventListener('click', scrollToTop);
 });
