@@ -5,60 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Amora Shop</title>
     <!-- Favicon for browser tab -->
-    <link rel="icon" type="image/png" href="amoralogo.png">
+    <link rel="icon" type="image/png" href="amora.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Specific styles for the login screen */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-card h2 {
+            margin-bottom: 25px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .error-msg {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <header class="main-header">
-        <div class="brand-container">
-            <img src="amora.png" alt="Amora Logo" class="brand-logo">
+    <!-- Login Screen -->
+    <div id="login-overlay">
+        <div class="login-card">
+            <img src="amora.png" alt="Logo" style="height: 80px; margin-bottom: 20px;">
+            <h2>Admin Login</h2>
+            <input type="text" id="admin-user" placeholder="Username">
+            <input type="password" id="admin-pass" placeholder="Password">
+            <button onclick="handleLogin()">Login</button>
+            <p id="login-error" class="error-msg">Invalid username or password</p>
         </div>
-    </header>
-    
-    <div class="form-container">
-        <h3 id="form-title" style="margin-bottom: 20px; font-weight: 300; letter-spacing: 1px;">Product Manager</h3>
-        <form id="addForm">
-            <input type="hidden" id="edit-id"> 
-            <input type="text" id="name" placeholder="Product Name" required>
-            <input type="number" id="price" placeholder="Price (Baht)" required>
-            
-            <select id="category" required>
-                <option value="" disabled selected>Select Category</option>
-                <option value="Unisex">Unisex</option>
-                <option value="Topwear">Topwear</option>
-                <option value="Bottomwear">Bottomwear</option>
-                <option value="One set">One set</option>
-                <option value="Dress">Dress</option>
-                <option value="Accessories">Accessories</option>
-            </select>
+    </div>
 
-            <textarea id="desc" placeholder="Short Description"></textarea>
-            
-            <div class="image-inputs-section">
-                <p style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #666; text-transform: uppercase;">Image Links (Imgur Direct)</p>
-                <input type="url" id="image_url" placeholder="Main Image (Required)" required>
-                <input type="url" id="image_url_2" placeholder="Image 2 (Optional)">
-                <input type="url" id="image_url_3" placeholder="Image 3 (Optional)">
-                <input type="url" id="image_url_4" placeholder="Image 4 (Optional)">
-                <input type="url" id="image_url_5" placeholder="Image 5 (Optional)">
+    <!-- Main Admin UI (Hidden until login) -->
+    <div id="admin-app" style="display: none;">
+        <header class="main-header">
+            <div class="brand-container">
+                <img src="amora.png" alt="Amora Logo" class="brand-logo">
             </div>
+        </header>
+        
+        <div class="form-container">
+            <h3 id="form-title" style="margin-bottom: 20px; font-weight: 300; letter-spacing: 1px;">Product Manager</h3>
+            <form id="addForm">
+                <input type="hidden" id="edit-id"> 
+                <input type="text" id="name" placeholder="Product Name" required>
+                <input type="number" id="price" placeholder="Price (Baht)" required>
+                
+                <select id="category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="Unisex">Unisex</option>
+                    <option value="Topwear">Topwear</option>
+                    <option value="Bottomwear">Bottomwear</option>
+                    <option value="One set">One set</option>
+                    <option value="Dress">Dress</option>
+                    <option value="Accessories">Accessories</option>
+                </select>
+
+                <textarea id="desc" placeholder="Short Description"></textarea>
+                
+                <div class="image-inputs-section">
+                    <p style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #666; text-transform: uppercase;">Image Links (Imgur Direct)</p>
+                    <input type="url" id="image_url" placeholder="Main Image (Required)" required>
+                    <input type="url" id="image_url_2" placeholder="Image 2 (Optional)">
+                    <input type="url" id="image_url_3" placeholder="Image 3 (Optional)">
+                    <input type="url" id="image_url_4" placeholder="Image 4 (Optional)">
+                    <input type="url" id="image_url_5" placeholder="Image 5 (Optional)">
+                </div>
+                
+                <button type="submit" id="submit-btn">Save Product</button>
+                <button type="button" id="cancel-btn" class="back-to-top" style="display:none; position:static; width:100%; border-radius:10px; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel Edit</button>
+            </form>
+        </div>
+
+        <h2 style="margin-top:40px; font-weight: 300;">Current Inventory</h2>
+        <div id="admin-list" class="grid"></div>
+
+        <button id="backToTop" class="back-to-top" title="Go to top">↑</button>
+
+        <div id="lightbox" class="lightbox">
+            <img id="lightbox-img" src="">
+            <p>Tap anywhere to close</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple login check
+        function handleLogin() {
+            const user = document.getElementById('admin-user').value;
+            const pass = document.getElementById('admin-pass').value;
             
-            <button type="submit" id="submit-btn">Save Product</button>
-            <button type="button" id="cancel-btn" class="back-to-top" style="display:none; position:static; width:100%; border-radius:10px; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel Edit</button>
-        </form>
-    </div>
+            // You can change these credentials here
+            if (user === "admin" && pass === "Amora@2026") {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('admin-app').style.display = 'block';
+                // Trigger initial data load if needed (app.js handles this on DOMContentLoaded usually)
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
 
-    <h2 style="margin-top:40px; font-weight: 300;">Current Inventory</h2>
-    <div id="admin-list" class="grid"></div>
-
-    <button id="backToTop" class="back-to-top" title="Go to top">↑</button>
-
-    <div id="lightbox" class="lightbox">
-        <img id="lightbox-img" src="">
-        <p>Tap anywhere to close</p>
-    </div>
-
+        // Allow pressing "Enter" to login
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && document.getElementById('login-overlay').style.display !== 'none') {
+                handleLogin();
+            }
+        });
+    </script>
     <script src="app.js"></script>
 </body>
 </html>
