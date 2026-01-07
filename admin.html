@@ -27,15 +27,29 @@
             </select>
 
             <textarea id="desc" placeholder="Short Description"></textarea>
-            <input type="url" id="image_url" placeholder="Imgur Direct Link (.jpg / .png)">
+            
+            <div class="image-inputs-section">
+                <p style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #555;">Image Links (Direct Links)</p>
+                <input type="url" id="image_url" placeholder="Main Image (Required)" required>
+                <input type="url" id="image_url_2" placeholder="Image 2 (Optional)">
+                <input type="url" id="image_url_3" placeholder="Image 3 (Optional)">
+                <input type="url" id="image_url_4" placeholder="Image 4 (Optional)">
+                <input type="url" id="image_url_5" placeholder="Image 5 (Optional)">
+            </div>
             
             <button type="submit" id="submit-btn">Save Product</button>
-            <button type="button" id="cancel-btn" style="display:none; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel</button>
+            <button type="button" id="cancel-btn" style="display:none; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel Edit</button>
         </form>
     </div>
 
     <h2 style="margin-top:40px;">Current Inventory</h2>
     <div id="admin-list" class="grid"></div>
+
+    <!-- Lightbox included in admin for quick checking -->
+    <div id="lightbox" class="lightbox">
+        <img id="lightbox-img" src="">
+        <p>Tap to close</p>
+    </div>
 
     <script src="app.js"></script>
 </body>
