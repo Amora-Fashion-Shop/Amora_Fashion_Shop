@@ -38,23 +38,20 @@ function renderFiltered() {
     if (sortTerm === 'high') filtered.sort((a, b) => b.price - a.price);
 
     if (filtered.length === 0) {
-        grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; padding: 40px;'>No products found.</p>";
+        grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; padding: 40px;'>ไม่พบสินค้าที่คุณค้นหา</p>";
         return;
     }
 
     grid.innerHTML = filtered.map(p => {
-        // Collect all available images for this product
         const images = [p.image_url, p.image_url_2, p.image_url_3, p.image_url_4, p.image_url_5].filter(url => url && url.trim() !== "");
         
         return `
         <div class="card">
-            <!-- Main Display Image -->
             <img src="${images[0] || 'https://via.placeholder.com/300'}" 
                  id="main-img-${p.id}" 
                  class="main-img" 
                  onclick="window.openLightbox(this.src)">
             
-            <!-- Gallery Thumbnails -->
             ${images.length > 1 ? `
                 <div class="thumb-gallery">
                     ${images.map(img => `<img src="${img}" onclick="document.getElementById('main-img-${p.id}').src='${img}'">`).join('')}
@@ -62,10 +59,10 @@ function renderFiltered() {
             ` : ''}
 
             <div class="card-content">
-                <span class="category-tag">${p.category || 'unisex'}</span>
+                <span class="category-tag">${p.category || 'Unisex'}</span>
                 <h3>${p.name}</h3>
                 <p>${p.description || ''}</p>
-                <p class="price">$${p.price}</p>
+                <p class="price">฿${p.price}</p>
             </div>
         </div>
     `}).join('');
@@ -79,10 +76,10 @@ async function adminListProducts() {
 
     const { data } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
     list.innerHTML = data.map(p => `
-        <div class="card" style="padding: 10px; margin-bottom: 10px;">
-            <img src="${p.image_url || 'https://via.placeholder.com/150'}" style="width:100%; height:120px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
+        <div class="card" style="padding: 10px; margin-bottom: 10px; border: 1px solid #ddd;">
+            <img src="${p.image_url || 'https://via.placeholder.com/150'}" style="width:100%; height:120px; object-fit:cover; border-radius:8px; margin-bottom:10px; cursor:pointer;" onclick="window.openLightbox(this.src)">
             <h3>${p.name}</h3>
-            <p>$${p.price} - ${p.category}</p>
+            <p>฿${p.price} - ${p.category}</p>
             <div style="display:flex; gap:5px; margin-top:10px;">
                 <button onclick="editProduct('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${p.price}', '${p.description ? p.description.replace(/'/g, "\\'") : ''}', '${p.image_url || ''}', '${p.image_url_2 || ''}', '${p.image_url_3 || ''}', '${p.image_url_4 || ''}', '${p.image_url_5 || ''}', '${p.category}')" style="background:#f39c12; flex:1;">Edit</button>
                 <button onclick="deleteProduct('${p.id}')" style="background:#e74c3c; flex:1;">Delete</button>
@@ -101,7 +98,7 @@ window.editProduct = (id, name, price, desc, img1, img2, img3, img4, img5, cat) 
     document.getElementById('image_url_3').value = img3 || '';
     document.getElementById('image_url_4').value = img4 || '';
     document.getElementById('image_url_5').value = img5 || '';
-    document.getElementById('category').value = cat || 'unisex';
+    document.getElementById('category').value = cat || 'Unisex';
 
     document.getElementById('form-title').innerText = "Edit Product";
     document.getElementById('submit-btn').innerText = "Update Product";
@@ -151,21 +148,20 @@ async function handleSave(e) {
 }
 
 async function deleteProduct(id) {
-    if (confirm("Are you sure?")) {
+    if (confirm("คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้?")) {
         const { error } = await _supabase.from('products').delete().eq('id', id);
         if (error) alert(error.message);
         else adminListProducts();
     }
 }
 
-// --- LIGHTBOX LOGIC ---
 window.openLightbox = (imgUrl) => {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     if(lightbox && lightboxImg) {
         lightboxImg.src = imgUrl;
         lightbox.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Stop scrolling behind lightbox
+        document.body.style.overflow = 'hidden';
     }
 };
 
@@ -177,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lightbox) {
         lightbox.addEventListener('click', function() {
             this.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
+            document.body.style.overflow = 'auto';
         });
     }
     
