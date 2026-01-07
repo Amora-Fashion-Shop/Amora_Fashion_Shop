@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Shop</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -12,27 +14,27 @@
         <h3 id="form-title">Add New Product</h3>
         <form id="addForm">
             <input type="hidden" id="edit-id"> 
-
             <input type="text" id="name" placeholder="Product Name" required>
             <input type="number" id="price" placeholder="Price" required>
             
-            <!-- Added Category Selector -->
-            <select id="category" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;">
-                <option value="General">General</option>
-                <option value="Clothing">Clothing</option>
+            <select id="category" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="Unisex">Unisex</option>
+                <option value="Topwear">Topwear</option>
+                <option value="Skirt">Skirt</option>
+                <option value="Pants">Pants</option>
                 <option value="Accessories">Accessories</option>
-                <option value="Electronics">Electronics</option>
             </select>
 
-            <textarea id="desc" placeholder="Description"></textarea>
-            <input type="url" id="image_url" placeholder="Imgur Direct Link (e.g., https://i.imgur.com/example.jpg)">
+            <textarea id="desc" placeholder="Short Description"></textarea>
+            <input type="url" id="image_url" placeholder="Imgur Direct Link (.jpg / .png)">
             
             <button type="submit" id="submit-btn">Save Product</button>
-            <button type="button" id="cancel-btn" style="display:none; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel Edit</button>
+            <button type="button" id="cancel-btn" style="display:none; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel</button>
         </form>
     </div>
 
-    <h2>Current Products</h2>
+    <h2 style="margin-top:40px;">Current Inventory</h2>
     <div id="admin-list" class="grid"></div>
 
     <script src="app.js"></script>
