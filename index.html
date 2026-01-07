@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Product Store</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Our Catalog</h1>
+
+    <!-- Filter and Search Section -->
+    <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="Search products...">
+        
+        <select id="categoryFilter">
+            <option value="all">All Categories</option>
+            <option value="General">General</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Electronics">Electronics</option>
+        </select>
+
+        <select id="priceSort">
+            <option value="newest">Newest First</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+        </select>
+    </div>
+
+    <div id="products-grid" class="grid"></div>
+    
+    <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); cursor:zoom-out; align-items:center; justify-content:center;">
+        <img id="lightbox-img" src="" style="max-width:90%; max-height:90%; border:3px solid white; border-radius:5px; box-shadow:0 0 20px rgba(0,0,0,0.5);">
+        <p style="position:absolute; top:20px; color:white; font-family:sans-serif;">Click anywhere to close</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

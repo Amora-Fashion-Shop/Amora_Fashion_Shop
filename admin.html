@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Product Manager</h1>
+    
+    <div class="form-container">
+        <h3 id="form-title">Add New Product</h3>
+        <form id="addForm">
+            <input type="hidden" id="edit-id"> 
+
+            <input type="text" id="name" placeholder="Product Name" required>
+            <input type="number" id="price" placeholder="Price" required>
+            
+            <!-- Added Category Selector -->
+            <select id="category" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                <option value="General">General</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Electronics">Electronics</option>
+            </select>
+
+            <textarea id="desc" placeholder="Description"></textarea>
+            <input type="url" id="image_url" placeholder="Imgur Direct Link (e.g., https://i.imgur.com/example.jpg)">
+            
+            <button type="submit" id="submit-btn">Save Product</button>
+            <button type="button" id="cancel-btn" style="display:none; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel Edit</button>
+        </form>
+    </div>
+
+    <h2>Current Products</h2>
+    <div id="admin-list" class="grid"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
