@@ -62,7 +62,7 @@ function renderFiltered() {
             ` : ''}
 
             <div class="card-content">
-                <span class="category-tag">${p.category || 'Unisex'}</span>
+                <span class="category-tag">${p.category || 'unisex'}</span>
                 <h3>${p.name}</h3>
                 <p>${p.description || ''}</p>
                 <p class="price">$${p.price}</p>
@@ -101,7 +101,7 @@ window.editProduct = (id, name, price, desc, img1, img2, img3, img4, img5, cat) 
     document.getElementById('image_url_3').value = img3 || '';
     document.getElementById('image_url_4').value = img4 || '';
     document.getElementById('image_url_5').value = img5 || '';
-    document.getElementById('category').value = cat || 'Unisex';
+    document.getElementById('category').value = cat || 'unisex';
 
     document.getElementById('form-title').innerText = "Edit Product";
     document.getElementById('submit-btn').innerText = "Update Product";
