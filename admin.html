@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Manage Amora Shop</title>
-    <!-- Favicon link to show logo in browser tab -->
+    <title>Admin - Amora Shop</title>
+    <!-- Favicon for browser tab -->
     <link rel="icon" type="image/png" href="amoralogo.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,7 +17,7 @@
     </header>
     
     <div class="form-container">
-        <h3 id="form-title">Add New Product</h3>
+        <h3 id="form-title" style="margin-bottom: 20px; font-weight: 300; letter-spacing: 1px;">Product Manager</h3>
         <form id="addForm">
             <input type="hidden" id="edit-id"> 
             <input type="text" id="name" placeholder="Product Name" required>
@@ -36,7 +36,7 @@
             <textarea id="desc" placeholder="Short Description"></textarea>
             
             <div class="image-inputs-section">
-                <p style="font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #555;">Image Links (Direct Links)</p>
+                <p style="font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #666; text-transform: uppercase;">Image Links (Imgur Direct)</p>
                 <input type="url" id="image_url" placeholder="Main Image (Required)" required>
                 <input type="url" id="image_url_2" placeholder="Image 2 (Optional)">
                 <input type="url" id="image_url_3" placeholder="Image 3 (Optional)">
@@ -45,14 +45,13 @@
             </div>
             
             <button type="submit" id="submit-btn">Save Product</button>
-            <button type="button" id="cancel-btn" style="display:none; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel Edit</button>
+            <button type="button" id="cancel-btn" class="back-to-top" style="display:none; position:static; width:100%; border-radius:10px; background:#95a5a6; margin-top:10px;" onclick="resetForm()">Cancel Edit</button>
         </form>
     </div>
 
-    <h2 style="margin-top:40px;">Current Inventory</h2>
+    <h2 style="margin-top:40px; font-weight: 300;">Current Inventory</h2>
     <div id="admin-list" class="grid"></div>
 
-    <!-- Floating Back to Top Button -->
     <button id="backToTop" class="back-to-top" title="Go to top">↑</button>
 
     <div id="lightbox" class="lightbox">
